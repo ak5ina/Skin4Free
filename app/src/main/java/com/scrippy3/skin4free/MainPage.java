@@ -36,7 +36,7 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
     FirebaseDatabase database;
     DatabaseReference myRef;
     GoogleSignInAccount account;
-
+    
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private int tickets = 0;
