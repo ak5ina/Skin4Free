@@ -108,15 +108,39 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
 
         GetPriceData();
 
+
+        //ADS
+        AdRequest adRequest = new AdRequest.Builder().build();
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+
+            }
+        });
+
+
         btnClaimTicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myRef = database.getReference().child("Users").child(mAuth.getUid()).child("Tickets").child(getDayNumberOld());
-                myRef.setValue(true);
-                //ADMIN
 
-//                startActivity(new Intent(MainPage.this, ActivityDraw.class));
-//                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+
+                RewardedAd.load(MainPage.this, getResources().getString(R.string.google_ad), adRequest, new RewardedAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                        super.onAdLoaded(rewardedAd);
+                        mRewardedAd = rewardedAd;
+                        System.out.println("On ad loaded");
+
+                        ShowAd();
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        super.onAdFailedToLoad(loadAdError);
+                        mRewardedAd = null;
+                        System.out.println("Error: " + loadAdError);
+                    }
+                });
 
             }
         });
@@ -150,24 +174,8 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
         btnChangeWeek.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 clickOnWeeklyBtn();
-            }
-        });
-
-//        btnJoinQuiz.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainPage.this, QuestionActivity.class));
-//                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-//            }
-//        });
-
-        //ADS
-        AdRequest adRequest = new AdRequest.Builder().build();
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
-
             }
         });
 
@@ -175,23 +183,8 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
             @Override
             public void onClick(View v) {
 
-                RewardedAd.load(MainPage.this, getResources().getString(R.string.google_ad), adRequest, new RewardedAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
-                        super.onAdLoaded(rewardedAd);
-                        mRewardedAd = rewardedAd;
-                        System.out.println("hey");
-
-                        ShowAd();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        super.onAdFailedToLoad(loadAdError);
-                        mRewardedAd = null;
-                        System.out.println("FEJL: " + loadAdError);
-                    }
-                });
+                myRef = database.getReference().child("Users").child(mAuth.getUid()).child("ExtraTickets").child("LimitedTicket");
+                myRef.setValue(true);
 
 
             }
@@ -235,7 +228,8 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
                     System.out.println(reward + " | " + type);
 
 
-                    myRef = database.getReference().child("Users").child(mAuth.getUid()).child("ExtraTickets").child("LimitedTicket");
+
+                    myRef = database.getReference().child("Users").child(mAuth.getUid()).child("Tickets").child(getDayNumberOld());
                     myRef.setValue(true);
                 }
             });
@@ -381,8 +375,6 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
 
     private void GetProfileData() {
 
-        System.out.println("---------");
-        System.out.println(mAuth.getUid());
 
         myRef = database.getReference().child("Users").child(mAuth.getUid());
 
@@ -395,7 +387,6 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
                     if (snap.getKey().equals("Tickets")) {
                         //Going into all the tickets
                         for (DataSnapshot snap2 : snap.getChildren()) {
-                            System.out.println(snap2.getValue());
                             if ((boolean) snap2.getValue()) {
                                 tickets++;
                             }
