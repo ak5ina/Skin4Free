@@ -24,7 +24,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.scrippy3.skin4free.Admin.Roller;
 
 import java.util.Calendar;
 
@@ -36,7 +35,7 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
     FirebaseDatabase database;
     DatabaseReference myRef;
     GoogleSignInAccount account;
-    
+
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private int tickets = 0;
@@ -150,11 +149,9 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
         btnClaimTimedTicket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                myRef = database.getReference().child("Users").child(mAuth.getUid()).child("ExtraTickets").child("LimitedTicket");
-//                myRef.setValue(true);
+                myRef = database.getReference().child("Users").child(mAuth.getUid()).child("ExtraTickets").child("LimitedTicket");
+                myRef.setValue(true);
 
-                Intent intent = new Intent(MainPage.this, ActivityDraw.class);
-                startActivity(intent);
             }
         });
 

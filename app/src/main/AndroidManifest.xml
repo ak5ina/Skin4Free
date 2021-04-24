@@ -22,8 +22,6 @@
             android:screenOrientation="portrait"></activity>
         <activity android:name=".QuestionActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ActivityDraw"
-            android:screenOrientation="portrait"/>
         <activity android:name=".Settings"
             android:screenOrientation="portrait"/>
         <activity android:name=".MainPage"
