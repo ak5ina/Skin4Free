@@ -26,7 +26,7 @@
 
     <LinearLayout
         android:id="@+id/this_week"
-        android:layout_below="@+id/logo"
+        android:layout_below="@+id/ticket_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -36,30 +36,6 @@
         android:layout_marginRight="25dp"
         android:gravity="center">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/btn_this_week"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="This week" />
-
-            <Space
-                android:layout_width="5dp"
-                android:layout_height="0dp"/>
-
-            <Button
-                android:id="@+id/btn_last_week"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Last week" />
-
-        </LinearLayout>
 
         <TextView
             android:id="@+id/text_header_week"
@@ -112,16 +88,41 @@
             android:textStyle="bold" />
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_this_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This week" />
+
+            <Space
+                android:layout_width="5dp"
+                android:layout_height="0dp"/>
+
+            <Button
+                android:id="@+id/btn_last_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last week" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ticket_layout"
-        android:layout_below="@+id/this_week"
+        android:layout_below="@+id/logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/box_bg"
-        android:layout_marginTop="25dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:gravity="center">
@@ -173,30 +174,105 @@
 
     </LinearLayout>
 
+
         <TextView
             android:id="@+id/text_tickets_privat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="0"
-            android:textSize="30sp" />
+            android:textSize="24sp" />
+
+
+
+        <LinearLayout
+            android:background="@drawable/frame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="2dp"
+            android:gravity="center">
+
+
+            <ImageView
+                android:id="@+id/day1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/day1"
+                />
+            <ImageView
+                android:id="@+id/day2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/day2"
+                />
+            <ImageView
+                android:id="@+id/day3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/day3"
+                />
+            <ImageView
+                android:id="@+id/day4"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/day4"
+                />
+            <ImageView
+                android:id="@+id/day5"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/day5"
+                />
+            <ImageView
+                android:id="@+id/day6"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/day6"
+                />
+            <ImageView
+                android:id="@+id/day7"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/day7"
+                />
+
+                <TextView
+                    android:id="@+id/extra"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="5dp"
+                    android:text="Extra: 0"
+                    android:gravity="center_horizontal"/>
+
+
+
+
+        </LinearLayout>
+
+
 
 
 
         <Button
             android:id="@+id/btn_claim_ticket"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="@string/claim_ticket"
-            android:layout_marginBottom="10dp"/>
-
+            android:layout_weight="3"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
 
         <Button
             android:id="@+id/btn_claim_limit_ticket"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
             android:text="@string/claim_limit_ticket"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
 
     </LinearLayout>
 

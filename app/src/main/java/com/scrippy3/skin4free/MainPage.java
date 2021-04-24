@@ -46,10 +46,10 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
 
 
     ImageView imageGa;
-    TextView personal_ticket, tv_week_header, tv_week_price, tv_week_winner, tv_week_tickets;
+    TextView personal_ticket, tv_week_header, tv_week_price, tv_week_winner, tv_week_tickets, tv_extra;
 
     Button btnClaimTicker, btnThisWeek, btnLastWeek, btnJoinQuiz, btnClaimTimedTicket;
-    ImageView btnSetSteamLink, btnInfo;
+    ImageView btnSetSteamLink, btnInfo, day1, day2, day3, day4, day5, day6, day7;
 
 
     @Override
@@ -72,6 +72,14 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
         tv_week_header = findViewById(R.id.text_header_week);
         tv_week_tickets = findViewById(R.id.text_total_ticket_week);
         tv_week_winner = findViewById(R.id.text_winner_week);
+        day1 = findViewById(R.id.day1);
+        day2 = findViewById(R.id.day2);
+        day3 = findViewById(R.id.day3);
+        day4 = findViewById(R.id.day4);
+        day5 = findViewById(R.id.day5);
+        day6 = findViewById(R.id.day6);
+        day7 = findViewById(R.id.day7);
+        tv_extra = findViewById(R.id.extra);
 
         database = FirebaseDatabase.getInstance();
 
@@ -239,6 +247,15 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
 
 
                     }
+
+
+                    else if (snap.getKey().contains("extra")) {
+                        if ((boolean) snap.getValue())
+                            btnClaimTimedTicket.setVisibility(View.VISIBLE);
+                        else
+                            btnClaimTimedTicket.setVisibility(View.GONE);
+
+                    }
                 }
 
                 tv_week_winner.setOnClickListener(new View.OnClickListener() {
@@ -266,6 +283,7 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
 
     }
 
+
     private void GetProfileData() {
 
         System.out.println("---------");
@@ -286,6 +304,8 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
                             if ((boolean) snap2.getValue()) {
                                 tickets++;
                             }
+
+                            ChangeColourOfCalender(snap2);
                         }
                     }
                     if (snap.getKey().contains("ExtraTickets")){
@@ -293,6 +313,7 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
                             if (snap2.getKey().contains("Amount")) {
                                 System.out.println(snap2.getValue());
                                 extraTickets = Integer.parseInt(snap2.getValue().toString());
+                                tv_extra.setText("Extra: " + extraTickets);
                             }
                         }
                     }
@@ -313,18 +334,70 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
 
     }
 
+    private void ChangeColourOfCalender(DataSnapshot key) {
+        System.out.println("-- -- -- ");
+        System.out.println(key.getValue());
+        System.out.println(key.getKey());
+
+        if (key.getKey().equals("Monday")){
+            if ((boolean)key.getValue())
+                day1.setBackgroundColor(getResources().getColor(R.color.green));
+            else
+                day1.setBackgroundColor(getResources().getColor(R.color.red));
+        }
+        else if (key.getKey().equals("Tuesday")){
+            if ((boolean)key.getValue())
+                day2.setBackgroundColor(getResources().getColor(R.color.green));
+            else
+                day2.setBackgroundColor(getResources().getColor(R.color.red));
+        }
+        else if (key.getKey().equals("Wednesday")){
+            if ((boolean)key.getValue())
+                day3.setBackgroundColor(getResources().getColor(R.color.green));
+            else
+                day3.setBackgroundColor(getResources().getColor(R.color.red));
+        }
+        else if (key.getKey().equals("Thursday")){
+            if ((boolean)key.getValue())
+                day4.setBackgroundColor(getResources().getColor(R.color.green));
+            else
+                day4.setBackgroundColor(getResources().getColor(R.color.red));
+        }
+        else if (key.getKey().equals("Friday")){
+            if ((boolean)key.getValue())
+                day5.setBackgroundColor(getResources().getColor(R.color.green));
+            else
+                day5.setBackgroundColor(getResources().getColor(R.color.red));
+        }
+        else if (key.getKey().equals("Saturday")){
+            if ((boolean)key.getValue())
+                day6.setBackgroundColor(getResources().getColor(R.color.green));
+            else
+                day6.setBackgroundColor(getResources().getColor(R.color.red));
+        }
+        else if (key.getKey().equals("Sunday")){
+            if ((boolean)key.getValue())
+                day7.setBackgroundColor(getResources().getColor(R.color.green));
+            else
+                day7.setBackgroundColor(getResources().getColor(R.color.red));
+        }
+
+    }
+
 
     @Override
     protected void onStart() {
         super.onStart();
         mUser = mAuth.getCurrentUser();
-        GetProfileData();
-
+        if (mUser == null){
+            GoBackToMainActivity();
+        } else {
+            GetProfileData();
+        }
     }
 
     private void GoBackToMainActivity(){
         startActivity(new Intent(MainPage.this, MainActivity.class));
-        finish();
     }
 
     @Override

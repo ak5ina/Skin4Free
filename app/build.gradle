@@ -11,8 +11,8 @@ android {
         applicationId "com.scrippy3.skin4free"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 9
-        versionName "4.0"
+        versionCode 10
+        versionName "4.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

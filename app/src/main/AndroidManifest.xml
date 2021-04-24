@@ -18,18 +18,14 @@
             android:value="ca-app-pub-4584326403186551~8885713451"
             />
 
-        <activity android:name=".QuestionSetupActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".QuestionActivity"
-            android:screenOrientation="portrait"/>
         <activity android:name=".Settings"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MainPage"
             android:screenOrientation="portrait"/>
         <activity android:name=".CreateAccount"
             android:screenOrientation="portrait"/>
         <activity android:name=".MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"/>
+            <activity android:name=".MainPage"
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
