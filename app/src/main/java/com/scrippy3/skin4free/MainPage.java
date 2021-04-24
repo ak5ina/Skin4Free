@@ -168,7 +168,7 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
         tv_week_winner.setText(lastWeek.getWinner());
         tv_week_tickets.setText("Tickets: " + lastWeek.getTickets());
         tv_week_header.setText("Last week:");
-        tv_week_price.setText("Price: " + lastWeek.getPrice());
+        tv_week_price.setText("Prize: " + lastWeek.getPrice());
         tv_week_winner.setClickable(true);
 
 
@@ -186,7 +186,7 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
         tv_week_winner.setText("");
         tv_week_tickets.setText("");
         tv_week_header.setText("This week:");
-        tv_week_price.setText("Price: " + thisWeek.getPrice());
+        tv_week_price.setText("Prize: " + thisWeek.getPrice());
         tv_week_winner.setClickable(false);
         Glide.with(MainPage.this)
                 .load(thisWeek.getPictureUrl())
