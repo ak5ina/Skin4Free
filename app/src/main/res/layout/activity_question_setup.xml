@@ -1,0 +1,88 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
+    android:layout_width="fill_parent"
+    android:background="@drawable/csgo_bg"
+    android:layout_height="fill_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+
+        tools:context=".MainActivity">
+
+
+
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            app:srcCompat="@drawable/banner"/>
+
+
+        <LinearLayout
+            android:id="@+id/ticket_layout"
+            android:layout_below="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/box_bg"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/admin_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:text="QUESTION TEMPLATE"
+                android:textSize="24sp" />
+
+
+            <Button
+                android:layout_marginTop="10dp"
+                android:id="@+id/btn_admin_start_up_quiz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start up quiz"
+                android:layout_marginBottom="10dp"/>
+
+
+            <Button
+                android:layout_marginTop="10dp"
+                android:id="@+id/btn_admin_new_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Update question"
+                android:layout_marginBottom="10dp"/>
+
+
+            <Button
+                android:layout_marginTop="10dp"
+                android:id="@+id/btn_admin_find_winner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Find winner"
+                android:layout_marginBottom="10dp"/>
+
+
+
+
+        </LinearLayout>
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+</ScrollView>

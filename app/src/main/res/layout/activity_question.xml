@@ -1,0 +1,138 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
+    android:layout_width="fill_parent"
+    android:background="@drawable/csgo_bg"
+    android:layout_height="fill_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+
+        tools:context=".MainActivity">
+
+
+
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            app:srcCompat="@drawable/banner"/>
+
+
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/logo"
+            android:id="@+id/text_question_live"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:text="No quiz up"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:id="@+id/ticket_layout"
+            android:layout_below="@+id/text_question_live"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/box_bg"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:gravity="center">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/text_question_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:text="Question nr: 0"
+                    android:textSize="24sp" />
+
+                <Space
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+
+                <ImageView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/icon_timer"/>
+
+                <TextView
+                    android:id="@+id/text_question_timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" : 0"
+                    android:layout_marginRight="15dp"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/text_question_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:text="WAIT FOR NEW QUESTION"
+                android:textSize="24sp" />
+
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/text_question_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:text=""
+                android:textSize="18sp" />
+
+
+
+            <EditText
+                android:layout_marginTop="10dp"
+                android:id="@+id/et_question_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="25dp"
+                android:hint="Enter your answer"
+                android:textSize="18sp" />
+
+
+            <Button
+                android:layout_marginTop="10dp"
+                android:id="@+id/btn_question_answer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/question_answer"
+                android:layout_marginBottom="10dp"/>
+
+        </LinearLayout>
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+</ScrollView>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Skin4Free</string>
+    <string name="claim_ticket">Claim ticket to weekly draw!</string>
+    <string name="claim_limit_ticket">RARE TICKET DROP</string>
+    <string name="question_answer">Send answer</string>
+    <string name="btn_quiz_string">Enter quiz</string>
+
+</resources>
