@@ -96,20 +96,11 @@
             android:gravity="center">
 
             <Button
-                android:id="@+id/btn_this_week"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="This week" />
-
-            <Space
-                android:layout_width="5dp"
-                android:layout_height="0dp"/>
-
-            <Button
-                android:id="@+id/btn_last_week"
+                android:id="@+id/btn_change_week"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Last week" />
+
 
         </LinearLayout>
 
@@ -140,6 +131,7 @@
             android:src="@drawable/info"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:clickable="true"
             />
 
@@ -169,6 +161,7 @@
             android:src="@drawable/gear"
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:clickable="true"
             />
 

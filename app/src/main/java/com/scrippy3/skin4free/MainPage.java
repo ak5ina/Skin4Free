@@ -40,6 +40,7 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
     private FirebaseUser mUser;
     private int tickets = 0;
     private int extraTickets = 0;
+    private boolean isItThisWeek;
 
     private GiveAway thisWeek, lastWeek;
     private LoadingDialog loadingDialog;
@@ -48,7 +49,7 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
     ImageView imageGa;
     TextView personal_ticket, tv_week_header, tv_week_price, tv_week_winner, tv_week_tickets, tv_extra;
 
-    Button btnClaimTicker, btnThisWeek, btnLastWeek, btnJoinQuiz, btnClaimTimedTicket;
+    Button btnClaimTicker, btnChangeWeek, btnJoinQuiz, btnClaimTimedTicket;
     ImageView btnSetSteamLink, btnInfo, day1, day2, day3, day4, day5, day6, day7;
 
 
@@ -56,6 +57,7 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
+        isItThisWeek = true;
 
         getSupportActionBar().hide();
 
@@ -63,8 +65,7 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
         personal_ticket = findViewById(R.id.text_tickets_privat);
         btnClaimTicker = findViewById(R.id.btn_claim_ticket);
         btnClaimTimedTicket = findViewById(R.id.btn_claim_limit_ticket);
-        btnLastWeek = findViewById(R.id.btn_last_week);
-        btnThisWeek = findViewById(R.id.btn_this_week);
+        btnChangeWeek = findViewById(R.id.btn_change_week);
         btnInfo = findViewById(R.id.btn_info);
         btnSetSteamLink = findViewById(R.id.btn_steamlink);
 //        btnJoinQuiz = findViewById(R.id.btn_join_quiz);
@@ -130,17 +131,10 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
             }
         });
 
-        btnLastWeek.setOnClickListener(new View.OnClickListener() {
+        btnChangeWeek.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowLastWeekGiveaway();
-            }
-        });
-
-        btnThisWeek.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShowThisWeekGiveaway();
+                clickOnWeeklyBtn();
             }
         });
 
@@ -170,10 +164,15 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
 
     private void ShowLastWeekGiveaway() {
 
+        isItThisWeek = false;
+
+        btnChangeWeek.setText("This week");
+        tv_week_winner.setVisibility(View.VISIBLE);
+        tv_week_tickets.setVisibility(View.VISIBLE);
         tv_week_winner.setText(lastWeek.getWinner());
         tv_week_tickets.setText("Tickets: " + lastWeek.getTickets());
         tv_week_header.setText("Last week:");
-        tv_week_price.setText("Price: " + lastWeek.getPrice());
+        tv_week_price.setText("Prize: " + lastWeek.getPrice());
         tv_week_winner.setClickable(true);
 
 
@@ -187,11 +186,15 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
     }
 
     private void ShowThisWeekGiveaway() {
+        isItThisWeek = true;
 
-        tv_week_winner.setText("");
-        tv_week_tickets.setText("");
+        btnChangeWeek.setText("Last week");
+
+
+        tv_week_winner.setVisibility(View.GONE);
+        tv_week_tickets.setVisibility(View.GONE);
         tv_week_header.setText("This week:");
-        tv_week_price.setText("Price: " + thisWeek.getPrice());
+        tv_week_price.setText("Prize: " + thisWeek.getPrice());
         tv_week_winner.setClickable(false);
         Glide.with(MainPage.this)
                 .load(thisWeek.getPictureUrl())
@@ -199,9 +202,19 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
 
     }
 
+    private void clickOnWeeklyBtn(){
+
+        if (isItThisWeek)
+            ShowLastWeekGiveaway();
+        else
+            ShowThisWeekGiveaway();
+
+    }
 
 
     private void GetPriceData() {
+        tv_week_winner.setVisibility(View.GONE);
+        tv_week_tickets.setVisibility(View.GONE);
 
         myRef = database.getReference().child("giveaway");
         myRef.addValueEventListener(new ValueEventListener() {
