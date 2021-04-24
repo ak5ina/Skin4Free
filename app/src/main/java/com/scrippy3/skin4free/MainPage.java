@@ -305,6 +305,16 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
                                 tickets++;
                             }
 
+
+                            if (snap2.getKey().equals(getDayNumberOld())){
+                                if ((boolean) snap2.getValue())
+                                    btnClaimTicker.setVisibility(View.GONE);
+                                else
+                                    btnClaimTicker.setVisibility(View.VISIBLE);
+
+                            }
+
+
                             ChangeColourOfCalender(snap2);
                         }
                     }
