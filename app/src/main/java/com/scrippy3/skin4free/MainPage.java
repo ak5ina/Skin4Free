@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -32,6 +44,8 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions gso;
 
+    private RewardedAd mRewardedAd;
+
     FirebaseDatabase database;
     DatabaseReference myRef;
     GoogleSignInAccount account;
@@ -41,6 +55,7 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
     private int tickets = 0;
     private int extraTickets = 0;
     private boolean isItThisWeek;
+    private boolean isTheExtraTicketActive;
 
     private GiveAway thisWeek, lastWeek;
     private LoadingDialog loadingDialog;
@@ -58,6 +73,7 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
         isItThisWeek = true;
+        isTheExtraTicketActive = false;
 
         getSupportActionBar().hide();
 
@@ -147,12 +163,36 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
 //        });
 
         //ADS
+        AdRequest adRequest = new AdRequest.Builder().build();
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+
+            }
+        });
 
         btnClaimTimedTicket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myRef = database.getReference().child("Users").child(mAuth.getUid()).child("ExtraTickets").child("LimitedTicket");
-                myRef.setValue(true);
+
+                RewardedAd.load(MainPage.this, getResources().getString(R.string.google_ad), adRequest, new RewardedAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                        super.onAdLoaded(rewardedAd);
+                        mRewardedAd = rewardedAd;
+                        System.out.println("hey");
+
+                        ShowAd();
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        super.onAdFailedToLoad(loadAdError);
+                        mRewardedAd = null;
+                        System.out.println("FEJL: " + loadAdError);
+                    }
+                });
+
 
             }
         });
@@ -160,6 +200,46 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
 
         loadingDialog.startLoadingDialog();
 
+    }
+
+    private void ShowAd() {
+
+        mRewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+            @Override
+            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                super.onAdFailedToShowFullScreenContent(adError);
+                System.out.println("ad failed to show full screen");
+            }
+
+            @Override
+            public void onAdShowedFullScreenContent() {
+                super.onAdShowedFullScreenContent();
+                System.out.println("ad showed full screen");
+            }
+
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                super.onAdDismissedFullScreenContent();
+                System.out.println("ad dismissed full screen");
+            }
+        });
+
+        if (mRewardedAd != null){
+            Activity activityContext = MainPage.this;
+            mRewardedAd.show(activityContext, new OnUserEarnedRewardListener() {
+                @Override
+                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                    System.out.println("YEAS");
+                    int reward = rewardItem.getAmount();
+                    String type = rewardItem.getType();
+                    System.out.println(reward + " | " + type);
+
+
+                    myRef = database.getReference().child("Users").child(mAuth.getUid()).child("ExtraTickets").child("LimitedTicket");
+                    myRef.setValue(true);
+                }
+            });
+        }
     }
 
     private void ShowLastWeekGiveaway() {
@@ -268,6 +348,8 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
                         else
                             btnClaimTimedTicket.setVisibility(View.GONE);
 
+                        isTheExtraTicketActive = (boolean) snap.getValue();
+
                     }
                 }
 
@@ -336,8 +418,16 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
                             if (snap2.getKey().contains("Amount")) {
                                 System.out.println(snap2.getValue());
                                 extraTickets = Integer.parseInt(snap2.getValue().toString());
-                                tv_extra.setText("Extra: " + extraTickets);
                             }
+                            else if (snap2.getKey().equals("LimitedTicket")){
+                                if ((boolean) snap2.getValue() && isTheExtraTicketActive){
+                                    extraTickets++;
+                                }
+                            }
+
+                            tv_extra.setText("Extra: " + extraTickets);
+
+
                         }
                     }
                     System.out.println(snap.getKey());
