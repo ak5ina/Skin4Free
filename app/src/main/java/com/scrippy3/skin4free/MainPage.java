@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdError;
@@ -25,6 +26,8 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -39,12 +42,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
-public class MainPage extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
+public class MainPage extends AppCompatActivity implements OnUserEarnedRewardListener {
 
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions gso;
 
-    private RewardedAd mRewardedAd;
+    private RewardedInterstitialAd rewardedInterstitialAd;
 
     FirebaseDatabase database;
     DatabaseReference myRef;
@@ -114,33 +117,16 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
-
+                System.out.println("YOU CAN USE ADS NOW");
             }
         });
 
+        LoadAds();
 
         btnClaimTicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                RewardedAd.load(MainPage.this, getResources().getString(R.string.google_ad), adRequest, new RewardedAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
-                        super.onAdLoaded(rewardedAd);
-                        mRewardedAd = rewardedAd;
-                        System.out.println("On ad loaded");
-
-                        ShowAd();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        super.onAdFailedToLoad(loadAdError);
-                        mRewardedAd = null;
-                        System.out.println("Error: " + loadAdError);
-                    }
-                });
+                rewardedInterstitialAd.show(MainPage.this, MainPage.this::onUserEarnedReward);
 
             }
         });
@@ -195,46 +181,41 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
 
     }
 
-    private void ShowAd() {
+    private void LoadAds() {
+        RewardedInterstitialAd.load(MainPage.this, getResources().getString(R.string.google_ad),
+                new AdRequest.Builder().build(),  new RewardedInterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(RewardedInterstitialAd ad) {
+                        rewardedInterstitialAd = ad;
+                        System.out.println("Ad loaded");
+                        rewardedInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            /** Called when the ad failed to show full screen content. */
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                System.out.println("onAdFailedToShowFullScreenContent");
+                            }
 
-        mRewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-            @Override
-            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                super.onAdFailedToShowFullScreenContent(adError);
-                System.out.println("ad failed to show full screen");
-            }
+                            /** Called when ad showed the full screen content. */
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                System.out.println("onAdShowedFullScreenContent");
+                            }
 
-            @Override
-            public void onAdShowedFullScreenContent() {
-                super.onAdShowedFullScreenContent();
-                System.out.println("ad showed full screen");
-            }
-
-            @Override
-            public void onAdDismissedFullScreenContent() {
-                super.onAdDismissedFullScreenContent();
-                System.out.println("ad dismissed full screen");
-            }
-        });
-
-        if (mRewardedAd != null){
-            Activity activityContext = MainPage.this;
-            mRewardedAd.show(activityContext, new OnUserEarnedRewardListener() {
-                @Override
-                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-                    System.out.println("YEAS");
-                    int reward = rewardItem.getAmount();
-                    String type = rewardItem.getType();
-                    System.out.println(reward + " | " + type);
-
-
-
-                    myRef = database.getReference().child("Users").child(mAuth.getUid()).child("Tickets").child(getDayNumberOld());
-                    myRef.setValue(true);
-                }
-            });
-        }
+                            /** Called when full screen content is dismissed. */
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                System.out.println("onAdDismissedFullScreenContent");
+                            }
+                        });
+                    }
+                    @Override
+                    public void onAdFailedToLoad(LoadAdError loadAdError) {
+//                        Toast.makeText(MainPage.this, loadAdError.toString(), Toast.LENGTH_LONG).show();
+                        System.out.println("Error : " + loadAdError);
+                    }
+                });
     }
+
 
     private void ShowLastWeekGiveaway() {
 
@@ -413,6 +394,7 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
                             else if (snap2.getKey().equals("LimitedTicket")){
                                 if ((boolean) snap2.getValue() && isTheExtraTicketActive){
                                     extraTickets++;
+                                    btnClaimTimedTicket.setVisibility(View.GONE);
                                 }
                             }
 
@@ -439,9 +421,6 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
     }
 
     private void ChangeColourOfCalender(DataSnapshot key) {
-        System.out.println("-- -- -- ");
-        System.out.println(key.getValue());
-        System.out.println(key.getKey());
 
         if (key.getKey().equals("Monday")){
             if ((boolean)key.getValue())
@@ -504,10 +483,6 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
         startActivity(new Intent(MainPage.this, MainActivity.class));
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
 
     public static String getDayNumberOld() {
         Calendar cal = Calendar.getInstance();
@@ -542,4 +517,11 @@ public class MainPage extends AppCompatActivity implements GoogleApiClient.OnCon
         return day;
     }
 
+    @Override
+    public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+        System.out.println(rewardItem.getType() + " | " + rewardItem.getAmount());
+
+        myRef = database.getReference().child("Users").child(mAuth.getUid()).child("Tickets").child(getDayNumberOld());
+        myRef.setValue(true);
+    }
 }
