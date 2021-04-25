@@ -293,7 +293,7 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
                                 .load(thisWeek.getPictureUrl())
                                 .into(imageGa);
                         // and text
-                        tv_week_price.setText("Price: " + thisWeek.getPrice());
+                        tv_week_price.setText("Prize: " + thisWeek.getPrice());
 
 
                     }
