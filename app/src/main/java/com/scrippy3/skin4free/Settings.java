@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -17,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Settings extends AppCompatActivity {
 
+    private boolean error;
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
@@ -43,10 +45,15 @@ public class Settings extends AppCompatActivity {
         btnSettingsSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                error = false;
                 myRef = database.getReference().child("Users").child(mAuth.getUid());
-                myRef.child("SteamTradeLink").setValue(etSteamTradeLink.getText().toString());
                 myRef.child("DiscordName").setValue(etDiscordName.getText().toString());
-                finish();
+                if (etSteamTradeLink.getText().toString().contains("https://steamcommunity.com/traderoffer/new")){
+                    myRef.child("SteamTradeLink").setValue(etSteamTradeLink.getText().toString());
+                    finish();
+                } else {
+                    Toast.makeText(Settings.this, "Please enter a valid steam trade link", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

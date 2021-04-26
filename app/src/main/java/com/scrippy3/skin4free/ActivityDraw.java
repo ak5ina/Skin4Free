@@ -133,6 +133,8 @@ public class ActivityDraw extends AppCompatActivity {
                         }
                     }
                 }
+
+                database.getReference().child("giveaway").child("extra").setValue(false);
             }
 
             @Override
@@ -143,6 +145,7 @@ public class ActivityDraw extends AppCompatActivity {
     }
 
     private void StartExtraTicker() {
+        database.getReference().child("giveaway").child("extra").setValue(true);
         myRef = database.getReference().child("Users");
         pushRef = database.getReference().child("Users");
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {

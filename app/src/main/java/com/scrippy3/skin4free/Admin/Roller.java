@@ -105,6 +105,7 @@ public class Roller {
                     myRef.child(snap.getKey()).child("Tickets").child("Friday").setValue(false);
                     myRef.child(snap.getKey()).child("Tickets").child("Saturday").setValue(false);
                     myRef.child(snap.getKey()).child("Tickets").child("Sunday").setValue(false);
+                    myRef.child(snap.getKey()).child("ExtraTickets").child("Amount").setValue(0);
                 }
             }
 
@@ -140,6 +141,7 @@ public class Roller {
                     } // checking for amount
 
                     if (i > 1){
+                        System.out.println("-----");
                         System.out.println("Multiple accounts found on:");
                         System.out.println("Tradelink: " + checkerTest.get(timeInLoop));
                         System.out.println("Id in DB: " + checkerTest2.get(timeInLoop));
