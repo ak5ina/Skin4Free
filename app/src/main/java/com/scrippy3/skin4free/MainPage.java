@@ -212,6 +212,9 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
                     public void onAdFailedToLoad(LoadAdError loadAdError) {
 //                        Toast.makeText(MainPage.this, loadAdError.toString(), Toast.LENGTH_LONG).show();
                         System.out.println("Error : " + loadAdError);
+                        if (loadAdError.getCode() == 3){
+                            btnClaimTicker.setVisibility(View.GONE);
+                        }
                     }
                 });
     }
