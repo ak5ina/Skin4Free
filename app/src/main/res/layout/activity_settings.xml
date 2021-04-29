@@ -59,6 +59,17 @@
             android:textSize="18sp" />
 
 
+
+        <EditText
+            android:layout_marginTop="10dp"
+            android:id="@+id/edittext_settings_refCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="25dp"
+            android:hint="Enter Refcode"
+            android:textSize="18sp" />
+
+
         <Button
             android:id="@+id/btn_settings_save"
             android:layout_width="wrap_content"

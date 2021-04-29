@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,11 +24,13 @@ public class Settings extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private DatabaseReference myRef2;
     private DatabaseReference myRefTradeLink;
     private DatabaseReference myRefDiscordName;
+    private DatabaseReference myRefCode;
     Button btnSettingsSave;
 
-    EditText etSteamTradeLink, etDiscordName;
+    EditText etSteamTradeLink, etDiscordName, etRefCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,7 @@ public class Settings extends AppCompatActivity {
         etSteamTradeLink = findViewById(R.id.edittext_settings_steamlink);
         etDiscordName = findViewById(R.id.edittext_settings_discordname);
         btnSettingsSave = findViewById(R.id.btn_settings_save);
+        etRefCode = findViewById(R.id.edittext_settings_refCode);
 
         btnSettingsSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +52,23 @@ public class Settings extends AppCompatActivity {
                 myRef = database.getReference().child("Users").child(mAuth.getUid());
                 myRef.child("SteamTradeLink").setValue(etSteamTradeLink.getText().toString());
                 myRef.child("DiscordName").setValue(etDiscordName.getText().toString());
+
+                if (etRefCode.getText().toString().length() > 3) {
+                    myRef2 = database.getReference().child("refCodes");
+                    myRef2.child(etRefCode.getText().toString()).setValue(mAuth.getUid()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful())
+                                myRef.child("personalRefCode").setValue(etRefCode.getText().toString());
+                            else {
+                                Toast.makeText(Settings.this, "The ref code is already in use.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                } else
+                    Toast.makeText(Settings.this, "Ref code length is minimum 4 letters.", Toast.LENGTH_SHORT).show();
+
+
                 finish();
             }
         });
@@ -73,6 +96,23 @@ public class Settings extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.getValue() != null)
                     etDiscordName.setText(snapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        myRefCode = database.getReference().child("Users").child(mAuth.getUid()).child("personalRefCode");
+
+        myRefCode.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.getValue() != null) {
+                    etRefCode.setText(snapshot.getValue().toString());
+                    etRefCode.setEnabled(false);
+                }
             }
 
             @Override

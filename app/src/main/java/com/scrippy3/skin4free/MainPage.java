@@ -47,7 +47,7 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions gso;
 
-    private RewardedInterstitialAd rewardedInterstitialAd;
+    private RewardedInterstitialAd rewardedInterstitialAd, rewardedInterstitialAd2;
 
     FirebaseDatabase database;
     DatabaseReference myRef;
@@ -58,7 +58,7 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
     private int tickets = 0;
     private int extraTickets = 0;
     private boolean isItThisWeek;
-    private boolean isTheExtraTicketActive;
+    private boolean isTheExtraTicketActive, isItMainTicket;
 
     private GiveAway thisWeek, lastWeek;
     private LoadingDialog loadingDialog;
@@ -79,6 +79,8 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
         isTheExtraTicketActive = false;
 
         getSupportActionBar().hide();
+
+        isItMainTicket = false;
 
         imageGa = findViewById(R.id.image_week_price);
         personal_ticket = findViewById(R.id.text_tickets_privat);
@@ -121,12 +123,13 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
             }
         });
 
-        LoadAds();
 
         btnClaimTicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rewardedInterstitialAd.show(MainPage.this, MainPage.this::onUserEarnedReward);
+                isItMainTicket = true;
+                LoadAds();
+                loadingDialog.startLoadingDialog();
 
             }
         });
@@ -168,11 +171,9 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
         btnClaimTimedTicket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                myRef = database.getReference().child("Users").child(mAuth.getUid()).child("ExtraTickets").child("LimitedTicket");
-                myRef.setValue(true);
-
-
+                isItMainTicket = false;
+                LoadAds();
+                loadingDialog.startLoadingDialog();
             }
         });
 
@@ -207,14 +208,15 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
                                 System.out.println("onAdDismissedFullScreenContent");
                             }
                         });
+                        loadingDialog.dismissDialog();
+                        rewardedInterstitialAd.show(MainPage.this, MainPage.this::onUserEarnedReward);
                     }
                     @Override
                     public void onAdFailedToLoad(LoadAdError loadAdError) {
 //                        Toast.makeText(MainPage.this, loadAdError.toString(), Toast.LENGTH_LONG).show();
                         System.out.println("Error : " + loadAdError);
-                        if (loadAdError.getCode() == 3){
-                            btnClaimTicker.setVisibility(View.GONE);
-                        }
+                        loadingDialog.dismissDialog();
+                        Toast.makeText(MainPage.this, "Error on ad loading! try again in 10 min.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -523,8 +525,13 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
     @Override
     public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
         System.out.println(rewardItem.getType() + " | " + rewardItem.getAmount());
-
-        myRef = database.getReference().child("Users").child(mAuth.getUid()).child("Tickets").child(getDayNumberOld());
-        myRef.setValue(true);
+        if (isItMainTicket) {
+            myRef = database.getReference().child("Users").child(mAuth.getUid()).child("Tickets").child(getDayNumberOld());
+            myRef.setValue(true);
+        }
+        else {
+            myRef = database.getReference().child("Users").child(mAuth.getUid()).child("ExtraTickets").child("LimitedTicket");
+            myRef.setValue(true);
+        }
     }
 }
