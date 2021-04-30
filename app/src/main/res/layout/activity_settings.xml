@@ -4,18 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/csgo_bg"
+    android:background="@drawable/box_bg2"
     android:orientation="vertical"
     android:gravity="center_horizontal"
     tools:context=".MainActivity">
 
 
-    <ImageView
+    <LinearLayout
         android:id="@+id/logo"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_margin="10dp"
-        app:srcCompat="@drawable/banner"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/logopic1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logoskins4free"/>
+
+
+        <ImageView
+            android:layout_marginTop="5dp"
+            android:id="@+id/logopic2"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:src="@drawable/logotrans"/>
+
+
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/settings_box"
@@ -32,7 +51,9 @@
         <TextView
             android:layout_marginTop="10dp"
             android:id="@+id/text_settings_header"
+            android:fontFamily="@font/alegreya_sc_black"
             android:layout_width="match_parent"
+            android:textColor="#FFFFFF"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Settings:"
@@ -45,6 +66,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="25dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/whiteish"
             android:hint="Enter steam trade link"
             android:textSize="18sp" />
 
@@ -54,6 +77,8 @@
             android:id="@+id/edittext_settings_discordname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textColorHint="@color/whiteish"
             android:paddingLeft="25dp"
             android:hint="Enter discord name"
             android:textSize="18sp" />
@@ -65,18 +90,34 @@
             android:id="@+id/edittext_settings_refCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textColorHint="@color/whiteish"
             android:paddingLeft="25dp"
+            android:layout_marginBottom="10dp"
             android:hint="Enter Refcode"
             android:textSize="18sp" />
 
 
-        <Button
-            android:id="@+id/btn_settings_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save" />
-
     </LinearLayout>
 
+
+
+    <LinearLayout
+        android:layout_below="@+id/settings_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="25dp"
+        android:gravity="center">
+
+    <android.widget.Button
+        android:id="@+id/btn_settings_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadowbox"
+        android:textColor="#FFFFFF"
+        android:text="Save" />
+
+    </LinearLayout>
 
 </RelativeLayout>

@@ -4,18 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/csgo_bg"
+    android:background="@drawable/box_bg2"
     android:orientation="vertical"
     android:gravity="center_horizontal"
     tools:context=".MainActivity">
 
 
-    <ImageView
+    <LinearLayout
         android:id="@+id/logo"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_margin="10dp"
-        app:srcCompat="@drawable/banner"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/logopic1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logoskins4free"/>
+
+
+        <ImageView
+            android:layout_marginTop="5dp"
+            android:id="@+id/logopic2"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:src="@drawable/logotrans"/>
+
+
+
+    </LinearLayout>
+
 
 
 

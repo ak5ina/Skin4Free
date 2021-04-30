@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -32,6 +35,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,10 +48,7 @@ import java.util.Calendar;
 
 public class MainPage extends AppCompatActivity implements OnUserEarnedRewardListener {
 
-    private GoogleApiClient googleApiClient;
-    private GoogleSignInOptions gso;
-
-    private RewardedInterstitialAd rewardedInterstitialAd, rewardedInterstitialAd2;
+    private RewardedInterstitialAd rewardedInterstitialAd;
 
     FirebaseDatabase database;
     DatabaseReference myRef;
@@ -57,62 +58,44 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
     private FirebaseUser mUser;
     private int tickets = 0;
     private int extraTickets = 0;
-    private boolean isItThisWeek;
-    private boolean isTheExtraTicketActive, isItMainTicket;
+    private boolean isItMainTicket;
 
-    private GiveAway thisWeek, lastWeek;
+    private GiveAway thisWeek, lastWeek, nextWeek;
     private LoadingDialog loadingDialog;
 
 
     ImageView imageGa;
-    TextView personal_ticket, tv_week_header, tv_week_price, tv_week_winner, tv_week_tickets, tv_extra;
+    TextView personal_ticket, tv_week_price, tv_week_skin_type, tv_this_week, tv_last_week, tv_future;
 
-    Button btnClaimTicker, btnChangeWeek, btnJoinQuiz, btnClaimTimedTicket;
-    ImageView btnSetSteamLink, btnInfo, day1, day2, day3, day4, day5, day6, day7;
+    Button btnClaimTicker, btnClaimTimedTicket;
 
-
+    private BottomNavigationItemView btnRef, btnSetSteamLink, btnInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-        isItThisWeek = true;
-        isTheExtraTicketActive = false;
 
         getSupportActionBar().hide();
 
-        isItMainTicket = false;
-
         imageGa = findViewById(R.id.image_week_price);
         personal_ticket = findViewById(R.id.text_tickets_privat);
-        btnClaimTicker = findViewById(R.id.btn_claim_ticket);
-        btnClaimTimedTicket = findViewById(R.id.btn_claim_limit_ticket);
-        btnChangeWeek = findViewById(R.id.btn_change_week);
-        btnInfo = findViewById(R.id.btn_info);
-        btnSetSteamLink = findViewById(R.id.btn_steamlink);
-//        btnJoinQuiz = findViewById(R.id.btn_join_quiz);
-        tv_week_price = findViewById(R.id.text_price_week);
-        tv_week_header = findViewById(R.id.text_header_week);
-        tv_week_tickets = findViewById(R.id.text_total_ticket_week);
-        tv_week_winner = findViewById(R.id.text_winner_week);
-        day1 = findViewById(R.id.day1);
-        day2 = findViewById(R.id.day2);
-        day3 = findViewById(R.id.day3);
-        day4 = findViewById(R.id.day4);
-        day5 = findViewById(R.id.day5);
-        day6 = findViewById(R.id.day6);
-        day7 = findViewById(R.id.day7);
-        tv_extra = findViewById(R.id.extra);
+        btnClaimTicker = findViewById(R.id.button);
+        tv_week_price = findViewById(R.id.text_prize_gun_type);
+        tv_week_skin_type = findViewById(R.id.text_prize_skin_type);
+        btnInfo = findViewById(R.id.btn_menu_info);
+        btnSetSteamLink = findViewById(R.id.btn_menu_settings);
+        tv_this_week = findViewById(R.id.btn_this_week);
+        tv_last_week = findViewById(R.id.btn_last_week);
+        tv_future = findViewById(R.id.btn_future);
+        btnRef = findViewById(R.id.btn_menu_home);
 
         database = FirebaseDatabase.getInstance();
-
-
 
         mAuth = FirebaseAuth.getInstance();
 
         loadingDialog = new LoadingDialog(MainPage.this);
 
         GetPriceData();
-
 
         //ADS
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -150,7 +133,8 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
                 new AlertDialog.Builder(MainPage.this)
                         .setTitle("Info")
                         .setMessage("In this application you can claim daily tickets to the giveaway every sunday." +
-                                " \n Draw is showed on stream every sunday at 21:00 Paris time.")
+                                " \nDraw is showed on stream every sunday at 21:00 Paris time." +
+                                " \nYou can find the channel by searching for nudecoder on Youtube.")
 
                         // Specifying a listener allows you to take an action before dismissing the dialog.
                         // The dialog is automatically dismissed when a dialog button is clicked.
@@ -160,27 +144,58 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
             }
         });
 
-        btnChangeWeek.setOnClickListener(new View.OnClickListener() {
+        tv_this_week.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                clickOnWeeklyBtn();
+                ShowThisWeekGiveaway();
+                tv_this_week.setBackground(getResources().getDrawable(R.drawable.shadowbox));
+                tv_last_week.setBackground(null);
+                tv_future.setBackground(null);
             }
         });
 
-        btnClaimTimedTicket.setOnClickListener(new View.OnClickListener() {
+        tv_last_week.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isItMainTicket = false;
-                LoadAds();
-                loadingDialog.startLoadingDialog();
+                ShowLastWeekGiveaway();
+                tv_last_week.setBackground(getResources().getDrawable(R.drawable.shadowbox));
+                tv_this_week.setBackground(null);
+                tv_future.setBackground(null);
             }
         });
 
+
+
+        tv_future.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowNextWeekGiveaway();
+                tv_future.setBackground(getResources().getDrawable(R.drawable.shadowbox));
+                tv_this_week.setBackground(null);
+                tv_last_week.setBackground(null);
+            }
+        });
+
+        btnRef.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(MainPage.this)
+                        .setTitle("Not yet active")
+                        .setMessage("Soon your able to share a personal code with your friends"
+                         + "\nYou can allready now go under settings and reserve a uniq ref code.")
+
+                        // Specifying a listener allows you to take an action before dismissing the dialog.
+                        // The dialog is automatically dismissed when a dialog button is clicked.
+                        .setPositiveButton(android.R.string.yes, null)
+                        // A null listener allows the button to dismiss the dialog and take no further actioin
+                        .show();
+            }
+        });
 
         loadingDialog.startLoadingDialog();
 
     }
+
 
     private void LoadAds() {
         RewardedInterstitialAd.load(MainPage.this, getResources().getString(R.string.google_ad),
@@ -223,60 +238,37 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
 
 
     private void ShowLastWeekGiveaway() {
-
-        isItThisWeek = false;
-
-        btnChangeWeek.setText("This week");
-        tv_week_winner.setVisibility(View.VISIBLE);
-        tv_week_tickets.setVisibility(View.VISIBLE);
-        tv_week_winner.setText(lastWeek.getWinner());
-        tv_week_tickets.setText("Tickets: " + lastWeek.getTickets());
-        tv_week_header.setText("Last week:");
-        tv_week_price.setText("Prize: " + lastWeek.getPrice());
-        tv_week_winner.setClickable(true);
-
-
-
-
-
+        tv_week_price.setText(lastWeek.getGunType());
+        tv_week_skin_type.setText(lastWeek.getSkinType());
         Glide.with(MainPage.this)
                 .load(lastWeek.getPictureUrl())
                 .into(imageGa);
 
     }
 
+    private void ShowNextWeekGiveaway() {
+        tv_week_price.setText(nextWeek.getGunType());
+        tv_week_skin_type.setText(nextWeek.getSkinType());
+        Glide.with(MainPage.this)
+                .load(nextWeek.getPictureUrl())
+                .into(imageGa);
+
+    }
+
     private void ShowThisWeekGiveaway() {
-        isItThisWeek = true;
-
-        btnChangeWeek.setText("Last week");
-
-
-        tv_week_winner.setVisibility(View.GONE);
-        tv_week_tickets.setVisibility(View.GONE);
-        tv_week_header.setText("This week:");
-        tv_week_price.setText("Prize: " + thisWeek.getPrice());
-        tv_week_winner.setClickable(false);
+        tv_week_price.setText(thisWeek.getGunType());
+        tv_week_skin_type.setText(thisWeek.getSkinType());
         Glide.with(MainPage.this)
                 .load(thisWeek.getPictureUrl())
                 .into(imageGa);
 
     }
 
-    private void clickOnWeeklyBtn(){
-
-        if (isItThisWeek)
-            ShowLastWeekGiveaway();
-        else
-            ShowThisWeekGiveaway();
-
-    }
-
 
     private void GetPriceData() {
-        tv_week_winner.setVisibility(View.GONE);
-        tv_week_tickets.setVisibility(View.GONE);
 
-        myRef = database.getReference().child("giveaway");
+        myRef = database.getReference().child("GA");
+        System.out.println("TESTER");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -288,8 +280,10 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
                         for (DataSnapshot snap2 : snap.getChildren()){
                             if (snap2.getKey().contains("imageurl")){
                                 thisWeek.setPictureUrl(snap2.getValue().toString());
-                            } else if (snap2.getKey().contains("price")){
-                                thisWeek.setPrice(snap2.getValue().toString());
+                            } else if (snap2.getKey().contains("guntype")){
+                                thisWeek.setGunType(snap2.getValue().toString());
+                            } else if (snap2.getKey().contains("skintype")){
+                                thisWeek.setSkinType(snap2.getValue().toString());
                             }
                         }
 
@@ -298,7 +292,8 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
                                 .load(thisWeek.getPictureUrl())
                                 .into(imageGa);
                         // and text
-                        tv_week_price.setText("Prize: " + thisWeek.getPrice());
+                        tv_week_price.setText(thisWeek.getGunType());
+                        tv_week_skin_type.setText(thisWeek.getSkinType());
 
 
                     }
@@ -309,38 +304,39 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
                         for (DataSnapshot snap2 : snap.getChildren()){
                             if (snap2.getKey().contains("imageurl")){
                                 lastWeek.setPictureUrl(snap2.getValue().toString());
-                            } else if (snap2.getKey().contains("price")){
-                                lastWeek.setPrice(snap2.getValue().toString());
-                            }  else if (snap2.getKey().contains("winner")){
-                                lastWeek.setWinner(snap2.getValue().toString());
-                            }  else if (snap2.getKey().contains("tickets")){
-                                lastWeek.setTickets(Integer.parseInt(snap2.getValue().toString()));
+                            } else if (snap2.getKey().contains("guntype")){
+                                lastWeek.setGunType(snap2.getValue().toString());
+                            } else if (snap2.getKey().contains("skintype")){
+                                lastWeek.setSkinType(snap2.getValue().toString());
+                            }
+
+//                              else if (snap2.getKey().contains("winner")){
+//                                lastWeek.setWinner(snap2.getValue().toString());
+//                            }  else if (snap2.getKey().contains("tickets")){
+//                                lastWeek.setTickets(Integer.parseInt(snap2.getValue().toString()));
+//                            }
+                        }
+
+
+                    }
+
+                    else if (snap.getKey().contains("nextweek")) {
+
+                        nextWeek = new GiveAway();
+                        for (DataSnapshot snap2 : snap.getChildren()){
+                            if (snap2.getKey().contains("imageurl")){
+                                nextWeek.setPictureUrl(snap2.getValue().toString());
+                            } else if (snap2.getKey().contains("guntype")){
+                                nextWeek.setGunType(snap2.getValue().toString());
+                            } else if (snap2.getKey().contains("skintype")){
+                                nextWeek.setSkinType(snap2.getValue().toString());
                             }
                         }
 
 
                     }
 
-
-                    else if (snap.getKey().contains("extra")) {
-                        if ((boolean) snap.getValue())
-                            btnClaimTimedTicket.setVisibility(View.VISIBLE);
-                        else
-                            btnClaimTimedTicket.setVisibility(View.GONE);
-
-                        isTheExtraTicketActive = (boolean) snap.getValue();
-
-                    }
                 }
-
-                tv_week_winner.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Uri uri = Uri.parse(lastWeek.getWinner());
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
-                    }
-                });
 
 
                 loadingDialog.dismissDialog();
@@ -379,15 +375,17 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
 
 
                             if (snap2.getKey().equals(getDayNumberOld())){
-                                if ((boolean) snap2.getValue())
-                                    btnClaimTicker.setVisibility(View.GONE);
-                                else
-                                    btnClaimTicker.setVisibility(View.VISIBLE);
-
+                                if ((boolean) snap2.getValue()) {
+                                    btnClaimTicker.setText("Ticket claimed!");
+                                    btnClaimTicker.setBackground(getResources().getDrawable(R.drawable.greenshadowbox));
+                                    btnClaimTicker.setClickable(false);
+                                }
+                                else {
+                                    btnClaimTicker.setText("Claim ticket");
+                                    btnClaimTicker.setBackground(getResources().getDrawable(R.drawable.shadowbox));
+                                }
                             }
 
-
-                            ChangeColourOfCalender(snap2);
                         }
                     }
                     if (snap.getKey().contains("ExtraTickets")){
@@ -396,14 +394,6 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
                                 System.out.println(snap2.getValue());
                                 extraTickets = Integer.parseInt(snap2.getValue().toString());
                             }
-                            else if (snap2.getKey().equals("LimitedTicket")){
-                                if ((boolean) snap2.getValue() && isTheExtraTicketActive){
-                                    extraTickets++;
-                                    btnClaimTimedTicket.setVisibility(View.GONE);
-                                }
-                            }
-
-                            tv_extra.setText("Extra: " + extraTickets);
 
 
                         }
@@ -422,53 +412,6 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
 
             }
         });
-
-    }
-
-    private void ChangeColourOfCalender(DataSnapshot key) {
-
-        if (key.getKey().equals("Monday")){
-            if ((boolean)key.getValue())
-                day1.setBackgroundColor(getResources().getColor(R.color.green));
-            else
-                day1.setBackgroundColor(getResources().getColor(R.color.red));
-        }
-        else if (key.getKey().equals("Tuesday")){
-            if ((boolean)key.getValue())
-                day2.setBackgroundColor(getResources().getColor(R.color.green));
-            else
-                day2.setBackgroundColor(getResources().getColor(R.color.red));
-        }
-        else if (key.getKey().equals("Wednesday")){
-            if ((boolean)key.getValue())
-                day3.setBackgroundColor(getResources().getColor(R.color.green));
-            else
-                day3.setBackgroundColor(getResources().getColor(R.color.red));
-        }
-        else if (key.getKey().equals("Thursday")){
-            if ((boolean)key.getValue())
-                day4.setBackgroundColor(getResources().getColor(R.color.green));
-            else
-                day4.setBackgroundColor(getResources().getColor(R.color.red));
-        }
-        else if (key.getKey().equals("Friday")){
-            if ((boolean)key.getValue())
-                day5.setBackgroundColor(getResources().getColor(R.color.green));
-            else
-                day5.setBackgroundColor(getResources().getColor(R.color.red));
-        }
-        else if (key.getKey().equals("Saturday")){
-            if ((boolean)key.getValue())
-                day6.setBackgroundColor(getResources().getColor(R.color.green));
-            else
-                day6.setBackgroundColor(getResources().getColor(R.color.red));
-        }
-        else if (key.getKey().equals("Sunday")){
-            if ((boolean)key.getValue())
-                day7.setBackgroundColor(getResources().getColor(R.color.green));
-            else
-                day7.setBackgroundColor(getResources().getColor(R.color.red));
-        }
 
     }
 

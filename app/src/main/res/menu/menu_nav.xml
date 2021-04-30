@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
     <item
-        android:id="@+id/btn_yestoday"
+        android:id="@+id/btn_menu_home"
+        android:title="Referrals"
+        android:icon="@drawable/ref_icon"
+        />
+
+    <item
+        android:id="@+id/btn_menu_info"
         android:title="info"
         android:icon="@drawable/info"
         />
 
     <item
-        android:id="@+id/btn_weekly"
-        android:title="Home"
-        android:icon="@drawable/gear"
-        />
-
-    <item
-        android:id="@+id/btn_mounthly"
+        android:id="@+id/btn_menu_settings"
         android:title="Settings"
-        android:icon="@drawable/gear"
+        android:icon="@drawable/setting_icon"
         />
 
 </menu>

@@ -3,7 +3,7 @@ package com.scrippy3.skin4free;
 public class GiveAway {
 
     private int tickets;
-    private String price, winner, pictureUrl;
+    private String price, winner, pictureUrl, skinType, gunType;
 
     public GiveAway(){
 
@@ -39,5 +39,21 @@ public class GiveAway {
 
     public void setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
+    }
+
+    public String getGunType() {
+        return gunType;
+    }
+
+    public void setGunType(String gunType) {
+        this.gunType = gunType;
+    }
+
+    public String getSkinType() {
+        return skinType;
+    }
+
+    public void setSkinType(String skinType) {
+        this.skinType = skinType;
     }
 }

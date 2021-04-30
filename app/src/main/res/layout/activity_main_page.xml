@@ -63,9 +63,12 @@
             android:fontFamily="@font/alegreya_sc_black"
             android:text="This week"
             android:clickable="true"
-            android:padding="5dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:textColor="@color/white"
-            android:background="@drawable/box_bg"
+            android:background="@drawable/shadowbox"
             android:textSize="22sp" />
 
         <Space
@@ -78,9 +81,12 @@
             android:layout_width="wrap_content"
             android:textColor="@color/white"
             android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:fontFamily="@font/alegreya_sc_black"
-            android:text="Next week"
+            android:text="Last week"
             android:clickable="true"
             android:textSize="22sp" />
 
@@ -90,13 +96,16 @@
             android:layout_weight="1"/>
 
         <TextView
-            android:id="@+id/btn_future_week"
+            android:id="@+id/btn_future"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:padding="5dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:fontFamily="@font/alegreya_sc_black"
-            android:text=" Future"
+            android:text="Next week"
             android:clickable="true"
             android:textSize="22sp" />
 
@@ -127,7 +136,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/box_bg"
+        android:background="@drawable/shadowbox"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="0dp"
         android:layout_marginRight="5dp"
@@ -144,7 +153,8 @@
 
 
             <TextView
-                android:textSize="18sp"
+                android:paddingLeft="10dp"
+                android:textSize="22sp"
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -153,23 +163,25 @@
 
 
             <TextView
+                android:paddingLeft="10dp"
                 android:id="@+id/text_prize_gun_type"
                 android:textSize="22sp"
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alegreya_sc_black"
-                android:text="Desert Eagle"/>
+                android:text=""/>
 
 
             <TextView
+                android:paddingLeft="10dp"
                 android:id="@+id/text_prize_skin_type"
-                android:textSize="22sp"
+                android:textSize="18sp"
                 android:textColor="@color/green"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alegreya_sc_black"
-                android:text="Code Red (BS)"/>
+                android:text=""/>
 
         </LinearLayout>
 
@@ -180,7 +192,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:minHeight="100dp"/>
+            android:minHeight="150dp"/>
 
 
     </LinearLayout>
@@ -205,6 +217,7 @@
 
 
         <TextView
+            android:id="@+id/text_tickets_privat"
             android:textSize="22sp"
             android:textColor="@color/green"
             android:layout_width="wrap_content"
@@ -221,13 +234,16 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center">
-    <Button
+
+    <android.widget.Button
         android:textSize="22dp"
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/shadowbox"
         android:minHeight="65dp"
         android:minWidth="220dp"
+        android:textColor="#FFFFFF"
         android:fontFamily="@font/alegreya_sc_black"
         android:text="Claim ticket" />
 
