@@ -59,6 +59,7 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
     private int tickets = 0;
     private int extraTickets = 0;
     private boolean isItMainTicket;
+    private String personWhoReferedMe;
 
     private GiveAway thisWeek, lastWeek, nextWeek;
     private LoadingDialog loadingDialog;
@@ -357,6 +358,7 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 tickets = 0;
+                personWhoReferedMe = null;
 
                 for (DataSnapshot snap : snapshot.getChildren()){
                     if (snap.getKey().equals("Tickets")) {
@@ -391,12 +393,16 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
 
                         }
                     }
+                    if (snap.getKey().contains("referedBy")){
+                        personWhoReferedMe = snap.getValue().toString();
+                    }
                     System.out.println(snap.getKey());
                 }
 
                 tickets = tickets + extraTickets;
 
-                personal_ticket.setText(Integer.toString(tickets));
+                GetReferalTickets();
+
 
             }
 
@@ -405,6 +411,29 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
 
             }
         });
+
+    }
+
+    private void GetReferalTickets() {
+        myRef = database.getReference().child("refList").child(mAuth.getUid());
+        personal_ticket.setText(Integer.toString(tickets));
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snap : snapshot.getChildren()){
+                    if ((boolean) snap.getValue())
+                        tickets++;
+                }
+                personal_ticket.setText(Integer.toString(tickets));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
 
     }
 
@@ -461,13 +490,13 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
     @Override
     public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
         System.out.println(rewardItem.getType() + " | " + rewardItem.getAmount());
-        if (isItMainTicket) {
+
             myRef = database.getReference().child("Users").child(mAuth.getUid()).child("Tickets").child(getDayNumberOld());
             myRef.setValue(true);
-        }
-        else {
-            myRef = database.getReference().child("Users").child(mAuth.getUid()).child("ExtraTickets").child("LimitedTicket");
-            myRef.setValue(true);
-        }
+
+            if (personWhoReferedMe != null){
+                database.getReference().child("refList").child(personWhoReferedMe).child(mAuth.getUid()).setValue(true);
+            }
+
     }
 }
