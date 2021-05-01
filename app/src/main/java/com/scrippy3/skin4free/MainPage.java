@@ -176,19 +176,13 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
             }
         });
 
+
+
         btnRef.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(MainPage.this)
-                        .setTitle("Not yet active")
-                        .setMessage("Soon your able to share a personal code with your friends"
-                         + "\nYou can allready now go under settings and reserve a uniq ref code.")
-
-                        // Specifying a listener allows you to take an action before dismissing the dialog.
-                        // The dialog is automatically dismissed when a dialog button is clicked.
-                        .setPositiveButton(android.R.string.yes, null)
-                        // A null listener allows the button to dismiss the dialog and take no further actioin
-                        .show();
+                startActivity(new Intent(MainPage.this, RefActivity.class));
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
             }
         });
 
@@ -268,7 +262,6 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
     private void GetPriceData() {
 
         myRef = database.getReference().child("GA");
-        System.out.println("TESTER");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
