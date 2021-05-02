@@ -116,29 +116,17 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_marginTop="15dp"
-        android:gravity="center_horizontal"
-        android:id="@+id/text_week"
-        android:layout_below="@id/menudiv"
-        android:textSize="22sp"
-        android:textColor="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/alegreya_sc_black"
-        android:text="This week"/>
-
 
 
     <LinearLayout
-        android:layout_below="@+id/text_week"
+        android:layout_below="@+id/menudiv"
         android:id="@+id/ticket_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@drawable/shadowbox"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="5dp"
         android:gravity="center">
 
