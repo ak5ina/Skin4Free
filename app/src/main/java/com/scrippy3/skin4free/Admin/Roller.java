@@ -44,7 +44,7 @@ public class Roller {
 
     public void GetAllEntries(){
         myRef = database.getReference().child("Users");
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snap : snapshot.getChildren()){
@@ -78,6 +78,36 @@ public class Roller {
                     }
                 }
 
+                GettingRefTickets();
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void GettingRefTickets() {
+        System.out.println("Getting ref tickets");
+
+        myRef = database.getReference().child("refList");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (DataSnapshot snap : snapshot.getChildren()){
+                    System.out.println("User " + snap.getKey());
+                    for (DataSnapshot snap2 : snap.getChildren()){
+                        System.out.println("ID " + snap2.getKey());
+                        if ((boolean) snap2.getValue()){
+                            drawingList.add(snap.getKey());
+                        }
+                    }
+                }
+
                 System.out.println("Total amount of tickets: " + drawingList.size());
                 for (int i = 0 ; i < drawingList.size(); i++){
                     System.out.println("Tickets number " + (i+1) + ": " + drawingList.get(i));
@@ -94,7 +124,7 @@ public class Roller {
 
     public void resetAllEntries(){
         myRef = database.getReference().child("Users");
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snap : snapshot.getChildren()){
@@ -119,7 +149,7 @@ public class Roller {
     public void CheckForMultipleAccounts(){
 
         myRef = database.getReference().child("Users");
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
