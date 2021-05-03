@@ -11,7 +11,8 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Skin4Free">
-        <activity android:name=".RefActivity"></activity>
+        <activity android:name=".PreviousGiveawaysActivity"></activity>
+        <activity android:name=".RefActivity" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

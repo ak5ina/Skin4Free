@@ -28,7 +28,7 @@ public class Settings extends AppCompatActivity {
     private DatabaseReference myRefTradeLink;
     private DatabaseReference myRefDiscordName;
     private DatabaseReference myRefCode;
-    Button btnSettingsSave;
+    Button btnSettingsSave, btn_back;
 
     EditText etSteamTradeLink, etDiscordName, etRefCode;
 
@@ -44,7 +44,15 @@ public class Settings extends AppCompatActivity {
         etSteamTradeLink = findViewById(R.id.edittext_settings_steamlink);
         etDiscordName = findViewById(R.id.edittext_settings_discordname);
         btnSettingsSave = findViewById(R.id.btn_settings_save);
+        btn_back = findViewById(R.id.btn_back);
         etRefCode = findViewById(R.id.edittext_settings_refCode);
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         btnSettingsSave.setOnClickListener(new View.OnClickListener() {
             @Override

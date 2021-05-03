@@ -7,19 +7,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class customDecisionAdapter extends BaseAdapter {
+public class customDecisionAdapterGA extends BaseAdapter {
     Context context;
     private ArrayList<String> list1;
     private ArrayList<String> list2;
+    private ArrayList<String> list3;
+    private ArrayList<String> list4;
 
-    public customDecisionAdapter(Context context, ArrayList<String>list1, ArrayList<String>list2) {
+    public customDecisionAdapterGA(Context context, ArrayList<String>list1, ArrayList<String>list2, ArrayList<String>list3, ArrayList<String>list4) {
         this.context= context;
         this.list1= list1;
         this.list2= list2;
+        this.list3= list3;
+        this.list4= list4;
 
     }
 
@@ -31,8 +37,10 @@ public class customDecisionAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.listview_item_ref,viewGroup,false);
 
         }
-        TextView t1 = (TextView) convertView.findViewById(R.id.listview_user_id);
-        TextView t2 = (TextView) convertView.findViewById(R.id.listview_user_active);
+        TextView t1 = (TextView) convertView.findViewById(R.id.listview_gift);
+        TextView t2 = (TextView) convertView.findViewById(R.id.listview_value);
+        Button b1 = (Button) convertView.findViewById(R.id.button_watch_ga);
+        ImageView i1 = (ImageView) convertView.findViewById(R.id.image_giveaway);
 
         // Verify value of position not greater than size of ArrayList.
         if(position < list1.size())
@@ -46,6 +54,22 @@ public class customDecisionAdapter extends BaseAdapter {
                 t2.setTextColor(Color.GREEN);
             }
         }
+        if(position< list3.size()) {
+            b1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    
+                }
+            });
+
+        }
+
+        if(position< list4.size()) {
+
+        }
+
+
+
         return convertView;
     }
 

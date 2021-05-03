@@ -76,24 +76,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-        <TextView
-            android:id="@+id/btn_last_week"
-            android:layout_width="wrap_content"
-            android:textColor="@color/white"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:fontFamily="@font/alegreya_sc_black"
-            android:text="Last week"
-            android:clickable="true"
-            android:textSize="22sp" />
 
-        <Space
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/btn_future"
@@ -106,6 +89,27 @@
             android:paddingRight="15dp"
             android:fontFamily="@font/alegreya_sc_black"
             android:text="Next week"
+            android:clickable="true"
+            android:textSize="22sp" />
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+
+
+        <TextView
+            android:id="@+id/btn_last_week"
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:fontFamily="@font/alegreya_sc_black"
+            android:text="Previous"
             android:clickable="true"
             android:textSize="22sp" />
 

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shadowbox2"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:gravity="center_horizontal"
+            android:id="@+id/listview_gift"
+            android:layout_marginLeft="10dp"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/alegreya_sc_black"
+            android:text="gift"/>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
+            android:id="@+id/listview_value"
+            android:layout_marginLeft="10dp"
+            android:textSize="18sp"
+            android:textColor="@color/green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/alegreya_sc_black"
+            android:text="value"/>
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+
+        <android.widget.Button
+            android:id="@+id/button_watch_ga"
+            android:layout_width="74dp"
+            android:layout_height="30dp"
+            android:background="@drawable/shadowbox"
+            android:fontFamily="@font/alegreya_sc_black"
+            android:layout_gravity="center"
+            android:gravity="bottom"
+
+            android:text="Watch draw"
+            android:textColor="#FFFFFF"
+            android:textSize="8sp" />
+
+
+
+    </LinearLayout>
+
+
+
+    <ImageView
+        android:id="@+id/image_giveaway"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:minHeight="100dp"
+        android:maxHeight="100dp"/>
+
+
+
+
+<!--    <Space-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"/>-->
+
+<!--    <TextView-->
+<!--        android:gravity="center_horizontal"-->
+<!--        android:id="@+id/listview_user_id"-->
+<!--        android:layout_marginLeft="10dp"-->
+<!--        android:textSize="18sp"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:fontFamily="@font/alegreya_sc_black"-->
+<!--        android:text="User"/>-->
+
+<!--    <Space-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="5"/>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/listview_user_active"-->
+<!--        android:textSize="22sp"-->
+<!--        android:textColor="@color/green"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:fontFamily="@font/alegreya_sc_black"-->
+<!--        android:text="active"/>-->
+
+
+<!--    <Space-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"/>-->
+
+
+</LinearLayout>
