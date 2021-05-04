@@ -13,7 +13,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:gravity="center_horizontal"
             android:id="@+id/listview_gift"
             android:layout_marginLeft="10dp"
             android:textSize="18sp"
@@ -25,7 +24,6 @@
 
         <TextView
             android:layout_marginTop="5dp"
-            android:gravity="center_horizontal"
             android:id="@+id/listview_value"
             android:layout_marginLeft="10dp"
             android:textSize="18sp"
@@ -35,10 +33,24 @@
             android:fontFamily="@font/alegreya_sc_black"
             android:text="value"/>
 
-        <Space
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+
+
+
+    </LinearLayout>
+
+
+
+    <ImageView
+        android:id="@+id/image_giveaway"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:minHeight="100dp"
+        android:maxHeight="100dp"
+        android:minWidth="100dp"
+        android:maxWidth="100dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"/>
+
 
 
         <android.widget.Button
@@ -53,59 +65,6 @@
             android:text="Watch draw"
             android:textColor="#FFFFFF"
             android:textSize="8sp" />
-
-
-
-    </LinearLayout>
-
-
-
-    <ImageView
-        android:id="@+id/image_giveaway"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:minHeight="100dp"
-        android:maxHeight="100dp"/>
-
-
-
-
-<!--    <Space-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="1"/>-->
-
-<!--    <TextView-->
-<!--        android:gravity="center_horizontal"-->
-<!--        android:id="@+id/listview_user_id"-->
-<!--        android:layout_marginLeft="10dp"-->
-<!--        android:textSize="18sp"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:fontFamily="@font/alegreya_sc_black"-->
-<!--        android:text="User"/>-->
-
-<!--    <Space-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="5"/>-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/listview_user_active"-->
-<!--        android:textSize="22sp"-->
-<!--        android:textColor="@color/green"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:fontFamily="@font/alegreya_sc_black"-->
-<!--        android:text="active"/>-->
-
-
-<!--    <Space-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="1"/>-->
 
 
 </LinearLayout>

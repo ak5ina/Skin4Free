@@ -61,22 +61,22 @@ public class Settings extends AppCompatActivity {
                 myRef.child("SteamTradeLink").setValue(etSteamTradeLink.getText().toString());
                 myRef.child("DiscordName").setValue(etDiscordName.getText().toString());
 
-                if (etRefCode.getText().toString().length() > 3) {
-                    myRef2 = database.getReference().child("refCodes");
-                    myRef2.child(etRefCode.getText().toString()).setValue(mAuth.getUid()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful())
-                                myRef.child("personalRefCode").setValue(etRefCode.getText().toString());
-                            else {
-                                Toast.makeText(Settings.this, "The ref code is already in use.", Toast.LENGTH_SHORT).show();
+                if (etRefCode.isEnabled()) {
+                    if (etRefCode.getText().toString().length() > 3) {
+                        myRef2 = database.getReference().child("refCodes");
+                        myRef2.child(etRefCode.getText().toString().toLowerCase()).setValue(mAuth.getUid()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful())
+                                    myRef.child("personalRefCode").setValue(etRefCode.getText().toString().toLowerCase());
+                                else {
+                                    Toast.makeText(Settings.this, "The ref code is already in use.", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
-                    });
-                } else
-                    Toast.makeText(Settings.this, "Ref code length is minimum 4 letters.", Toast.LENGTH_SHORT).show();
-
-
+                        });
+                    } else
+                        Toast.makeText(Settings.this, "Ref code length is minimum 4 letters.", Toast.LENGTH_SHORT).show();
+                }
                 finish();
             }
         });

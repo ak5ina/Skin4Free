@@ -2,7 +2,9 @@ package com.scrippy3.skin4free;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -34,7 +38,7 @@ public class customDecisionAdapterGA extends BaseAdapter {
         View convertView =  view;
         if(convertView==null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.listview_item_ref,viewGroup,false);
+            convertView = inflater.inflate(R.layout.listview_item_giveaway,viewGroup,false);
 
         }
         TextView t1 = (TextView) convertView.findViewById(R.id.listview_gift);
@@ -47,25 +51,25 @@ public class customDecisionAdapterGA extends BaseAdapter {
             t1.setText(list1.get(position));
 
         if(position< list2.size()) {
-            t2.setText(list2.get(position));
-            if (list2.get(position).equals("false")){
-                t2.setTextColor(Color.RED);
-            } else {
-                t2.setTextColor(Color.GREEN);
-            }
+            t2.setText(list2.get(position) + "$");
+
         }
         if(position< list3.size()) {
             b1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    
+                        Uri uri = Uri.parse(list3.get(position));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        context.startActivity(intent);
                 }
             });
 
         }
 
         if(position< list4.size()) {
-
+            Glide.with(context)
+                    .load(list4.get(position))
+                    .into(i1);
         }
 
 

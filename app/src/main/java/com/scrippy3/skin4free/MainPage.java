@@ -158,10 +158,14 @@ public class MainPage extends AppCompatActivity implements OnUserEarnedRewardLis
         tv_last_week.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowLastWeekGiveaway();
-                tv_last_week.setBackground(getResources().getDrawable(R.drawable.shadowbox));
-                tv_this_week.setBackground(null);
-                tv_future.setBackground(null);
+
+
+                startActivity(new Intent(MainPage.this, PreviousGiveawaysActivity.class));
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+//                ShowLastWeekGiveaway();
+//                tv_last_week.setBackground(getResources().getDrawable(R.drawable.shadowbox));
+//                tv_this_week.setBackground(null);
+//                tv_future.setBackground(null);
             }
         });
 

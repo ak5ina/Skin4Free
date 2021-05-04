@@ -26,7 +26,7 @@ public class RefActivity extends AppCompatActivity {
 
     private ListView refListView;
     private EditText et_ref_input;
-    private Button btn_save_ref_input;
+    private Button btn_save_ref_input, btn_back;
     private ArrayList<String> refCodes, idOfRefCodeHolder, referredPersons, valueOfReferredPerson;
     private boolean isTheRefCodeLegit;
     private TextView refAmount;
@@ -41,6 +41,7 @@ public class RefActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ref);
+        getSupportActionBar().hide();
 
         //Assigning objects / variables.
         AssignObjects();
@@ -52,6 +53,16 @@ public class RefActivity extends AppCompatActivity {
         GetPersonalReferedPerson();
         GetReferrals();
 
+        btn_back = findViewById(R.id.btn_back2);
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
         //Save ref code
         btn_save_ref_input.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +71,7 @@ public class RefActivity extends AppCompatActivity {
                 myRef2 = database.getReference().child("Users").child(mAuth.getUid()).child("referedBy");
 
                 for (int i = 0; i < refCodes.size(); i++){
-                    if (et_ref_input.getText().toString().equals(refCodes.get(i))) {
+                    if (et_ref_input.getText().toString().toLowerCase().equals(refCodes.get(i))) {
                         myRef = database.getReference().child("refList").child(idOfRefCodeHolder.get(i)).child(mAuth.getUid());
                         myRef2.setValue(idOfRefCodeHolder.get(i)).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

@@ -42,10 +42,21 @@
         </LinearLayout>
 
 
+        <android.widget.Button
+            android:layout_marginLeft="30dp"
+            android:layout_below="@id/logo"
+            android:id="@+id/btn_back2"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:background="@drawable/shadowbox"
+            android:fontFamily="@font/alegreya_sc_black"
+            android:text="Back"
+            android:textColor="#FFFFFF"
+            android:textSize="8sp" />
 
         <LinearLayout
             android:id="@+id/previous_giveaway_box"
-            android:layout_below="@+id/logo"
+            android:layout_below="@+id/btn_back2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -60,6 +71,7 @@
 
             <LinearLayout
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:id="@+id/topindiv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

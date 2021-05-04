@@ -36,9 +36,22 @@
     </LinearLayout>
 
 
+
+    <android.widget.Button
+        android:layout_marginLeft="30dp"
+        android:layout_below="@id/logo"
+        android:id="@+id/btn_back"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:background="@drawable/shadowbox"
+        android:fontFamily="@font/alegreya_sc_black"
+        android:text="Back"
+        android:textColor="#FFFFFF"
+        android:textSize="8sp" />
+
     <LinearLayout
         android:id="@+id/settings_box"
-        android:layout_below="@+id/logo"
+        android:layout_below="@+id/btn_back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -94,7 +107,7 @@
             android:textColorHint="@color/whiteish"
             android:paddingLeft="25dp"
             android:layout_marginBottom="10dp"
-            android:hint="Enter Refcode"
+            android:hint="Enter Refcode (*permanently)"
             android:textSize="18sp" />
 
 
@@ -109,15 +122,6 @@
         android:orientation="horizontal"
         android:layout_marginTop="25dp"
         android:gravity="center">
-
-        <android.widget.Button
-            android:id="@+id/btn_back"
-            android:layout_marginRight="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shadowbox"
-            android:textColor="#FFFFFF"
-            android:text="Back" />
 
         <android.widget.Button
             android:id="@+id/btn_settings_save"
